@@ -1,5 +1,9 @@
 Revision history for Perl extension Finance::Bank::easybank.
 
+1.05  Sun May  2 13:30:59 CEST 2004
+        - catched another possible login error ("Es ist ein Systemfehler
+          aufgetreten...").
+
 1.04  Mon Oct  6 22:20:53 CEST 2003
 	- adapted get_entries according to the new layout of
 	  of the entry-history.

@@ -1,4 +1,4 @@
-Finance::Bank::easybank version 0.03
+Finance::Bank::easybank version 1.05
 ====================================
 
 This module provides you with a basic interface to the Easybank AG
@@ -32,5 +32,4 @@ COPYRIGHT AND LICENCE
 You may distribute under the terms of either the GNU General Public
 License or the Artistic License, as specified in the Perl README file.
 
-Copyright (C) 2003 Florian Helmberger
-
+Copyright (C) 2003, 2004 Florian Helmberger

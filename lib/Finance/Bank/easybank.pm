@@ -1,4 +1,4 @@
-# $Id: easybank.pm,v 1.6 2003/10/06 20:37:31 florian Exp $
+# $Id: easybank.pm,v 1.7 2004/05/02 11:39:52 florian Exp $
 
 package Finance::Bank::easybank;
 
@@ -18,7 +18,7 @@ use Class::MethodMaker
 	boolean       => [ qw/return_floats _connected/ ],
 	list          => [ qw/accounts entries/ ];
 
-our $VERSION = '1.04';
+our $VERSION = '1.05';
 
 
 # login into the online banking system.
@@ -47,6 +47,8 @@ sub _connect {
 		if $content =~ /Das Format der Verf&#252;gernummer oder des Passworts ist ung&#252;ltig/;
 	croak "The online banking system told me, that the password was invalid.\n"
 		if $content =~ /Ihre PIN ist falsch/;
+    croak "There was a system error - please consult the hotline.\n"
+        if $content =~ /Es ist ein Systemfehler aufgetreten/;
 }
 
 

@@ -1,6 +1,8 @@
 Changes
 lib/Finance/Bank/easybank.pm
+lib/Finance/Bank/easybank.pod
 examples/balance.pl
+examples/balance-gpg.pl
 Makefile.PL
 MANIFEST
 README

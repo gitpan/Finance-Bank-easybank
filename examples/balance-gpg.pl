@@ -1,30 +1,23 @@
 #!/usr/bin/perl
 
-# $Id: balance.pl,v 1.2 2003/02/23 14:38:44 florian Exp $
+# $Id: balance-gpg.pl,v 1.1 2003/02/23 14:38:44 florian Exp $
 
 use Finance::Bank::easybank;
+use GnuPG::Interface;
+use IO::File;
+use IO::Handle;
+use YAML qw/Load/;
 
 use strict;
 use warnings;
 
-my $agent = Finance::Bank::easybank->new(
-        user          => 'xxx',
-        pass          => 'xxx',
-        return_floats => 1,
-
-        accounts      => [ qw/
-                2000xxxxxxx
-                / ],
-
-        entries       => [ qw/
-                2000xxxxxxx
-                / ],
-);
-
+my $agent    = Finance::Bank::easybank->new(&get_secrets);
 my @accounts = $agent->check_balance;
 my $entries  = $agent->get_entries;
 
 foreach my $account (@accounts) {
+	print '-' x 77, "\n\n";
+
         printf("%11s: %25s\n", $_->[0], $account->{$_->[1]})
                 for(( [ qw/ Kontonummer account / ],
                       [ qw/ BLZ bc / ],
@@ -51,4 +44,35 @@ foreach my $account (@accounts) {
 	}
 
         print "\n";
+}
+
+
+sub get_secrets {
+        my $secrets = '/Users/florian/bin/easybank.gpg';
+        my $cipher  = IO::File->new;
+        my $input   = IO::Handle->new;
+        my $output  = IO::Handle->new;
+        my $gnupg   = GnuPG::Interface->new;
+        my $pid;
+        my $plain;
+
+        $cipher->open($secrets, 'r')
+                or die sprintf("Couldn't open %s\n", $secrets);
+
+        $pid = $gnupg->decrypt(handles => GnuPG::Handles->new(
+                stdin  => $input,
+                stdout => $output,
+        ));
+
+        print $input $_ while <$cipher>;
+
+        close $cipher;
+        close $input;
+
+        $plain = Load(join('', <$output>));
+	close $output;
+
+        waitpid($pid, 0);
+
+        $plain;
 }

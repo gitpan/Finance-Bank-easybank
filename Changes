@@ -1,0 +1,6 @@
+Revision history for Perl extension Finance::Bank::easybank.
+
+0.01  Mon Jan 27 23:21:34 2003
+	- original version; created by h2xs 1.2 with options
+		-X -n Finance::Bank::easybank
+

@@ -1,4 +1,4 @@
-# $Id: easybank.pm,v 1.5 2003/08/14 21:34:12 florian Exp $
+# $Id: easybank.pm,v 1.6 2003/10/06 20:37:31 florian Exp $
 
 package Finance::Bank::easybank;
 
@@ -18,7 +18,7 @@ use Class::MethodMaker
 	boolean       => [ qw/return_floats _connected/ ],
 	list          => [ qw/accounts entries/ ];
 
-our $VERSION = '0.03';
+our $VERSION = '1.04';
 
 
 # login into the online banking system.
@@ -137,7 +137,7 @@ sub _parse_entries {
 
 	$accountno = $stream->get_trimmed_text('/td');
 
-	$stream->get_tag('table');
+	$stream->get_tag('table') for 1 .. 2;
 	$stream->get_tag('tr');
 
 	# ugh...
@@ -154,10 +154,14 @@ sub _parse_entries {
 		last unless $nr =~ /^\d+$/;
 		$entry{nr} = $nr;
 
-		# skip the optional scanned record link.
+		for(qw/date text/) {
+			$stream->get_tag('td');
+			$entry{$_} = $stream->get_trimmed_text('/td');
+		}
+
 		$stream->get_tag('td');
 
-		for(qw/date text value currency amount/) {
+		for(qw/value currency amount/) {
 			$stream->get_tag('td');
 			$entry{$_} = $stream->get_trimmed_text('/td');
 		}

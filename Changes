@@ -1,5 +1,16 @@
 Revision history for Perl extension Finance::Bank::easybank.
 
+1.04  Mon Oct  6 22:20:53 CEST 2003
+	- adapted get_entries according to the new layout of
+	  of the entry-history.
+	  Note: the date entry of the returned hashref has
+	        now the format DD.MM.YYYY.
+	- fixed the output of the example scripts in the
+	  face of the changed date format.
+	- brought POD up-to-date.
+	- changed version to 1.04, inspired by a talk about CPANTS
+	  at a vienna.pm techmeet.
+
 0.03  Thu Aug 14 23:04:24 CEST 2003
 	- the login page itself is now used as entry point and
 	  not the easybank frontpage, resulting in a noticeable

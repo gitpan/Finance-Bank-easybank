@@ -1,4 +1,4 @@
-# $Id: easybank.pm,v 1.4 2003/02/23 14:38:46 florian Exp $
+# $Id: easybank.pm,v 1.5 2003/08/14 21:34:12 florian Exp $
 
 package Finance::Bank::easybank;
 
@@ -9,13 +9,16 @@ use warnings;
 use Carp;
 use WWW::Mechanize;
 use HTML::TokeParser;
+use constant {
+	LOGIN_URL => 'https://ebanking.easybank.at//InternetBanking/InternetBanking?d=login&svc=EASYBANK&lang=de&ui=html',
+};
 use Class::MethodMaker
-  new_hash_init => 'new',
-  get_set       => [ qw/user pass _agent/ ],
-  boolean       => [ qw/return_floats _connected/ ],
-  list          => [ qw/accounts entries/ ];
+	new_hash_init => 'new',
+	get_set       => [ qw/user pass _agent/ ],
+	boolean       => [ qw/return_floats _connected/ ],
+	list          => [ qw/accounts entries/ ];
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 
 # login into the online banking system.
@@ -30,9 +33,9 @@ sub _connect {
 	croak "Need password to connect.\n" unless $self->pass;
 
 	$self->_agent(WWW::Mechanize->new);
-	$self->_agent->get('https://ebanking.easybank.at/InternetBanking/EASYBANK_webbank_de.html');
-	$self->_agent->follow(2);
-	$self->_agent->form(1);
+	$self->_agent->agent_alias('Mac Safari');
+	$self->_agent->get(LOGIN_URL);
+	$self->_agent->form_number(1);
 	$self->_agent->field('tn', $self->user);
 	$self->_agent->field('pin', $self->pass);
 	$self->_agent->click('Bsenden1');
@@ -59,7 +62,7 @@ sub check_balance {
 	# XXX: yeah, I'm lazy, but thats the easy way for a reset.
 	$self->_connect;
 
-	if(defined($self->accounts) && $self->accounts_count > 0) {
+	if($self->accounts_count > 0) {
 		foreach my $account ($self->accounts) {
 			$self->_select_account($account);
 			push @accounts, $self->_parse_summary($self->_agent->content);
@@ -91,11 +94,11 @@ sub get_entries {
 	$self->_connect;
 
 	# go to the entries page.
-	$self->_agent->form(2);
+	$self->_agent->form_number(2);
 	$self->_agent->click;
 
-	if(defined($self->entries) && $self->entries_count > 0) {
-		foreach my $account ($self->accounts) {
+	if($self->entries_count > 0) {
+		foreach my $account ($self->entries) {
 			$self->_select_account($account);
 
 			($accountno, $entries) = $self->_parse_entries($self->_agent->content);
@@ -114,7 +117,7 @@ sub get_entries {
 sub _select_account {
 	my($self, $account) = @_;
 
-	$self->_agent->form(1);
+	$self->_agent->form_number(1);
 	$self->_agent->field('selected-account', $account);
 	$self->_agent->click;
 }

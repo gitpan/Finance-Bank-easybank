@@ -222,10 +222,10 @@ provided under B<NO GUARANTEE>, explicit or implied.
 
 =head1 CAVEATS
 
-I did'nt had the change of testing this module against an account mapped
+I didn't had the chance of testing this module against an account mapped
 to only one bank account.
 
-It woule be very nice if someone with only one bank account could test
+It would be very nice if someone with only one bank account could test
 this module and drop me note about the results.
 
 Also take note that this module can break easily if easybank changes the
@@ -245,7 +245,7 @@ Florian Helmberger <fh@laudatio.com>
 
 =head1 VERSION
 
-$Id: easybank.pod,v 1.1 2003/02/23 14:38:46 florian Exp $
+$Id: easybank.pod,v 1.2 2003/08/14 21:31:56 florian Exp $
 
 =head1 COPYRIGHT AND LICENCE
 

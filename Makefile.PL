@@ -1,4 +1,4 @@
-# $Id: Makefile.PL,v 1.1 2003/01/28 08:53:30 florian Exp $
+# $Id: Makefile.PL,v 1.2 2003/08/14 21:35:23 florian Exp $
 
 use ExtUtils::MakeMaker;
 
@@ -6,7 +6,7 @@ WriteMakefile(
     'NAME'		=> 'Finance::Bank::easybank',
     'VERSION_FROM'	=> 'lib/Finance/Bank/easybank.pm',
     'PREREQ_PM'		=> {
-    	'WWW::Mechanize'      => 0.35,
+    	'WWW::Mechanize'      => 0.57,
 	'HTML::TokeParser'    => 2.24,
 	'Class::MethodMaker'  => 1.06,
     	},

@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# $Id: balance.pl,v 1.2 2003/02/23 14:38:44 florian Exp $
+# $Id: balance.pl,v 1.3 2003/08/14 21:34:43 florian Exp $
 
 use Finance::Bank::easybank;
 
@@ -44,7 +44,7 @@ foreach my $account (@accounts) {
 			$row->{text} =~ s/(.{43}).*/$1.../;
 
 			printf("%2d %6s %46s %6s %3s %9.2f\n", 
-				(map { $row->{$_} } qw/nr date text value currency/), 
+				@{$row}{qw/nr date text value currency/},
 				$row->{amount}
 			);      
 		}
